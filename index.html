@@ -193,7 +193,7 @@ header{transition:box-shadow .2s}header.sc{box-shadow:0 8px 24px rgb(0 0 0 / .18
       <p class="sub">Buy, rent ya becho. Pakistan bhar ki listings, aur abhi har ad <b>bilkul free</b> hai.</p>
       <div class="live"><i></i><span><b id="liveN">0</b> listings live</span></div>
     </div>
-    <video class="bgv" autoplay muted loop playsinline preload="auto" poster="hero-poster.jpg" aria-hidden="true"><source src="hero.mp4" type="video/mp4"></video>
+    <video class="bgv" autoplay muted loop playsinline preload="auto" poster="hero-poster.jpg?v=2" aria-hidden="true"><source src="hero.mp4?v=2" type="video/mp4"></video>
   </div>
   <div class="wrap">
     <form class="search" id="searchForm">
@@ -430,7 +430,7 @@ function countTo(n){if(n===shownN)return;const from=shownN,t0=performance.now(),
   if(matchMedia('(prefers-reduced-motion: reduce)').matches){el.textContent=n;return}
   const step=t=>{const k=Math.min(1,(t-t0)/900),e=1-(1-k)**3;el.textContent=Math.round(from+(n-from)*e);if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step)}
 
-{const v=document.querySelector('.hero .bgv');if(v&&matchMedia('(prefers-reduced-motion: reduce)').matches){v.removeAttribute('autoplay');v.pause()}}
+{const v=document.querySelector('.hero .bgv');if(v&&matchMedia('(prefers-reduced-motion: reduce)').matches){v.removeAttribute('autoplay');v.pause()}else if(v){const go=()=>v.play().catch(()=>{});go();document.addEventListener('visibilitychange',()=>{if(!document.hidden)go()})}}
 const layers=[...document.querySelectorAll('.sky .layer')];let tick=false;
 window.addEventListener('scroll',()=>{if(tick)return;tick=true;requestAnimationFrame(()=>{const y=window.scrollY;
   if(y<700&&!matchMedia('(prefers-reduced-motion: reduce)').matches)layers.forEach(l=>l.style.transform=`translateY(${y*num(l.dataset.k)}px)`);
