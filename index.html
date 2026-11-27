@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <meta name="description" content="Ghar.com — Pakistan property portal. Buy, rent or sell. Listings free.">
 <script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* VOICE: calm, trustworthy property portal with a modern edge — clear prices, clean cards, one bold accent.
@@ -112,8 +113,26 @@ footer{background:var(--plum);color:#e9e1f5;margin-top:40px}
 footer .wrap{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;padding-block:28px;font-size:14px}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(120px);background:var(--plum);color:#fff;padding:12px 18px;border-radius:12px;font-weight:700;z-index:50;transition:transform .25s;max-width:90vw}
 .toast.on{transform:translateX(-50%) translateY(0)}
+.hd .btn.ghost{color:#fff;border-color:rgb(255 255 255 / .28)}
+.authbox{max-width:460px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:clamp(20px,4vw,32px);box-shadow:0 12px 40px rgb(36 20 61 / .08)}
+.authbox .form{gap:12px}.authbox .tabs{margin:14px 0 6px}
+#authForm.in .up{display:none}
+.linkbtn{background:none;border:0;color:var(--pink2);font-weight:600;cursor:pointer;min-height:40px;padding:0;justify-self:start}
+.gate{display:grid;gap:10px;justify-items:start}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:8px 0 20px}
+.stats div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}.stats span{display:block;font-size:13px;color:var(--muted)}
+.stats b{font:800 26px 'Plus Jakarta Sans',sans-serif;font-variant-numeric:tabular-nums}
+table.adm{width:100%;border-collapse:collapse;font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+table.adm th{text-align:left;font-weight:600;color:var(--muted);background:var(--soft);padding:10px 12px;white-space:nowrap}
+table.adm td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+table.adm td.n{text-align:right;white-space:nowrap}
+.pill{display:inline-block;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:700;background:var(--soft)}
+.pill.on{background:light-dark(#e3f7ee,#123a2a);color:light-dark(#11734a,#5fe0a8)}.pill.off{background:light-dark(#fde8ee,#3a1828);color:var(--pink2)}
+.tag.f{left:auto;right:56px;top:10px;background:var(--pink);color:#fff}
+.acts{display:flex;gap:6px;flex-wrap:wrap}.acts .btn{min-height:34px;padding:0 10px;font-size:13px}
 @media(max-width:900px){.sg{grid-template-columns:repeat(2,minmax(0,1fr))}.sg .wide{grid-column:1/-1}.dt{grid-template-columns:1fr}.side{position:static}}
 @media(max-width:600px){.hd .btn{padding:0 12px;font-size:14px}.search{margin-top:-20px}.fg,.calc{grid-template-columns:1fr}.hide-s{display:none}}
+@media(min-width:601px){.show-s{display:none}}
 @media(prefers-reduced-motion:reduce){.card,.toast{transition:none}.card:hover{transform:none}}
 /* motion */
 @keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
@@ -162,8 +181,10 @@ header{transition:box-shadow .2s}header.sc{box-shadow:0 8px 24px rgb(0 0 0 / .18
     <a href="#home" data-p="rent">Rent</a>
     <a href="#saved" data-v="saved">Saved<span class="cnt" id="savedCnt">0</span></a>
     <a href="#my-ads" data-v="my-ads">My ads</a>
+    <a href="#post" data-v="post" class="show-s">Post ad</a>
+    <a href="#admin" data-v="admin" id="adminLink" hidden>Admin</a>
   </nav>
-  <a class="btn lime" href="#post">Post free ad</a>
+  <div class="row" style="flex-wrap:nowrap"><a class="btn ghost small" id="authBtn" href="#login">Sign in</a><a class="btn lime hide-s" href="#post">Post free ad</a></div>
 </div></header>
 
 <main>
@@ -274,9 +295,38 @@ header{transition:box-shadow .2s}header.sc{box-shadow:0 8px 24px rgb(0 0 0 / .18
       <label class="f">Your name *<input name="name" maxlength="50" autocomplete="name"><span class="err" data-e="name"></span></label>
       <label class="f">Mobile / WhatsApp *<input name="phone" inputmode="tel" placeholder="03XX XXXXXXX" autocomplete="tel"><span class="err" data-e="phone"></span></label>
     </div>
+    <p class="hint">Ad publish karne par aap ka naam aur number Ghar.com team ko bhi bheja jata hai, taake hum ad verify kar sakein.</p>
     <div id="postNote"></div>
     <div class="row"><button class="btn pink" id="postBtn" type="submit">Publish free ad</button><a class="btn ghost" href="#home">Cancel</a></div>
   </form>
+</div></section>
+
+<section class="view" id="v-login"><div class="wrap band"><div class="authbox">
+  <h2 id="authTitle" style="margin:0">Ghar.com pe sign in karein</h2>
+  <p class="hint" style="margin-top:6px">Account bilkul free hai. Sign in ke baad ads post karein, sellers ke numbers dekhein aur properties save karein.</p>
+  <div class="tabs" id="authTabs"><button type="button" data-m="in" class="on">Sign in</button><button type="button" data-m="up">Create account</button></div>
+  <form id="authForm" class="form in" novalidate>
+    <label class="f up">Full name<input name="name" autocomplete="name" maxlength="50"></label>
+    <label class="f">Email<input name="email" type="email" autocomplete="email"></label>
+    <label class="f up">Mobile number<input name="phone" inputmode="tel" placeholder="03XX XXXXXXX" autocomplete="tel"></label>
+    <label class="f">Password<input name="password" type="password" autocomplete="current-password"><span class="hint up">Kam se kam 8 characters</span></label>
+    <div class="err" id="authErr"></div>
+    <button class="btn pink" id="authGo" type="submit">Sign in</button>
+    <button type="button" class="linkbtn" id="forgot">Password bhool gaye?</button>
+  </form>
+</div></div></section>
+
+<section class="view" id="v-account"><div class="wrap band"><div class="authbox">
+  <h2 style="margin:0">Mera account</h2>
+  <div class="kv" id="accInfo"></div>
+  <div class="row"><a class="btn ghost" href="#my-ads">My ads</a><a class="btn ghost" href="#saved">Saved</a><button class="btn pink" type="button" id="signOut">Sign out</button></div>
+</div></div></section>
+
+<section class="view" id="v-admin"><div class="wrap band" id="adminWrap">
+  <div class="bar"><div><h2 style="margin:0">Admin panel</h2><p class="hint" style="margin:4px 0 0">Sirf admins ko dikhta hai.</p></div><input id="admQ" placeholder="Search title, area, naam, phone…" style="max-width:320px"></div>
+  <div class="stats" id="admStats"></div>
+  <div class="tabs" id="admTabs"><button type="button" data-at="ads" class="on">Listings</button><button type="button" data-at="users">Users</button></div>
+  <div class="scroll"><table class="adm stack" id="admTable"></table></div>
 </div></section>
 
 <section class="view" id="v-saved"><div class="wrap band"><h2>Saved properties</h2><div class="grid" id="savedGrid"></div></div></section>
@@ -331,7 +381,7 @@ function card(l,i=0){
   const src=photoSrc((l.photos||[])[0]);const id=esc(l.id);
   const specs=[l.beds>0?`${esc(l.beds)} bed${l.beds>1?'s':''}`:'',l.baths>0?`${esc(l.baths)} bath${l.baths>1?'s':''}`:'',l.size?`${esc(l.size)} ${esc(l.unit)}`:''].filter(Boolean).map(s=>`<li>${s}</li>`).join('');
   const isNew=!seen.has(l.id);seen.add(l.id);
-  return `<article class="card${isNew?' new':''}" style="--d:${isNew?Math.min(i,8)*.06:0}s"><a class="ph" href="#p-${id}">${src?`<img src="${esc(src)}" alt="" loading="lazy">`:art(l.type,l.id)}<span class="tag">${l.purpose==='rent'?'For rent':'For sale'}</span>${l.sample?'<span class="tag s">Sample</span>':''}</a>
+  return `<article class="card${isNew?' new':''}" style="--d:${isNew?Math.min(i,8)*.06:0}s"><a class="ph" href="#p-${id}">${src?`<img src="${esc(src)}" alt="" loading="lazy">`:art(l.type,l.id)}<span class="tag">${l.purpose==='rent'?'For rent':'For sale'}</span>${l.featured?'<span class="tag f">Featured</span>':l.sample?'<span class="tag s">Sample</span>':''}</a>
   <button class="fav${saved.includes(l.id)?' on':''}" data-fav="${id}" aria-label="Save property">${heart}</button>
   <div class="cb"><a href="#p-${id}"><div class="price">${esc(pkr(l.price))}${l.purpose==='rent'?' <small>/month</small>':''}</div><h3>${esc(l.title)}</h3></a>
   <p class="loc">${esc(l.area)}, ${esc(l.city)}</p><ul class="specs">${specs}</ul><p class="meta">${esc(l.type)} · ${esc(ago(l.createdAt))}</p></div></article>`;
@@ -341,12 +391,12 @@ function filtered(){
   const f=S.f,q=f.q.trim().toLowerCase(),mn=num(f.min),mx=num(f.max);
   let r=S.all.filter(l=>l.purpose===f.purpose&&(!f.city||l.city===f.city)&&(!f.type||l.type===f.type)
     &&(!q||(String(l.area)+' '+String(l.title)).toLowerCase().includes(q))&&(!mn||num(l.price)>=mn)&&(!mx||num(l.price)<=mx)&&(!f.beds||num(l.beds)>=num(f.beds)));
-  if(f.sort==='lo')r.sort((a,b)=>num(a.price)-num(b.price));else if(f.sort==='hi')r.sort((a,b)=>num(b.price)-num(a.price));else r.sort((a,b)=>num(b.createdAt)-num(a.createdAt));
+  if(f.sort==='lo')r.sort((a,b)=>num(a.price)-num(b.price));else if(f.sort==='hi')r.sort((a,b)=>num(b.price)-num(a.price));else r.sort((a,b)=>(b.featured?1:0)-(a.featured?1:0)||num(b.createdAt)-num(a.createdAt));
   return r;
 }
 function renderHome(){
   const f=S.f;$('#resTitle').textContent=(f.type?f.type+'s':'Properties')+(f.purpose==='rent'?' for rent':' for sale')+(f.city?' in '+f.city:'');
-  document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.purpose===f.purpose));
+  document.querySelectorAll('.tabs button[data-purpose]').forEach(b=>b.classList.toggle('on',b.dataset.purpose===f.purpose));
   if(!S.loaded){$('#grid').innerHTML='<div class="skel"></div>'.repeat(4);return}
   const r=filtered();
   $('#resCount').textContent=r.length+' of '+S.all.length+' listings match';countTo(S.all.length);
@@ -379,8 +429,8 @@ function renderDetail(id){
     ${l.desc?`<h3 style="font-size:18px">Description</h3><p class="desc">${esc(l.desc)}</p>`:''}
   </div><aside class="side">
     <div class="box"><div class="big">${esc(pkr(l.price))}</div>${l.purpose==='rent'?'<p class="hint">per month</p>':''}<p class="hint">${esc(num(l.price).toLocaleString('en-PK'))} rupees</p></div>
-    <div class="box"><p class="hint" style="margin:0">Posted by</p><b style="font-size:18px">${esc(l.name)}</b><div class="phone" style="margin:6px 0 12px">${esc(l.phone)}</div>
-      <div class="row"><a class="btn pink" href="tel:${esc(digits)}">Call</a><a class="btn lime" href="https://wa.me/${esc(wa)}" target="_blank" rel="noopener">WhatsApp</a><button class="btn ghost" type="button" data-copy="${esc(l.phone)}">Copy number</button></div></div>
+    ${needLogin()?`<div class="box gate"><b>Seller se rabta</b><p class="hint" style="margin:0">Number dekhne ke liye free account se sign in karein.</p><a class="btn pink" href="#login" data-after="p-${esc(l.id)}">Sign in to see number</a></div>`:`<div class="box"><p class="hint" style="margin:0">Posted by</p><b style="font-size:18px">${esc(l.name)}</b><div class="phone" style="margin:6px 0 12px">${esc(l.phone)}</div>
+      <div class="row"><a class="btn pink" href="tel:${esc(digits)}">Call</a><a class="btn lime" href="https://wa.me/${esc(wa)}" target="_blank" rel="noopener">WhatsApp</a><button class="btn ghost" type="button" data-copy="${esc(l.phone)}">Copy number</button></div></div>`}
     ${l.purpose==='sale'?`<div class="box"><b>Home finance estimate</b><div class="calc" style="margin-top:10px"><label class="f">Down %<input id="cDp" value="30" inputmode="decimal"></label><label class="f">Rate %<input id="cR" value="16" inputmode="decimal"></label><label class="f">Years<input id="cY" value="15" inputmode="numeric"></label></div><p class="hint" style="margin-top:10px">Monthly installment</p><div class="emi" id="emi"></div><p class="hint">Rough estimate only, bank se confirm karein.</p></div>`:''}
     <div class="row"><button class="btn ghost" type="button" data-fav="${esc(l.id)}">${saved.includes(l.id)?'Saved ♥':'Save'}</button><button class="btn ghost" type="button" data-share>Copy link</button>${mine?`<button class="btn ghost" type="button" data-del="${esc(l.id)}">Delete ad</button>`:''}</div>
   </aside></div>`;
@@ -390,7 +440,10 @@ function renderDetail(id){
 function route(){
   const h=decodeURIComponent(location.hash.slice(1))||'home';let v=h;
   if(h.startsWith('p-')){v='detail';renderDetail(h.slice(2))}
-  if(!['home','detail','post','saved','my-ads'].includes(v))v='home';
+  if(!['home','detail','post','saved','my-ads','login','account','admin'].includes(v))v='home';
+  if(needLogin()&&['post','saved','my-ads','account','admin'].includes(v)){S.after=v;location.replace('#login');return}
+  if(v==='login'&&S.user){location.replace('#'+(S.after||'home'));return}
+  if(v==='account')renderAccount();if(v==='admin')renderAdmin();if(v==='post')prefillPost();
   document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+v));
   document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.v===v||(v==='home'&&a.dataset.p===S.f.purpose)));
   if(v!=='home')window.scrollTo(0,0);
@@ -415,19 +468,20 @@ $('#featSeg').innerHTML=FEATS.map((x,i)=>`<input type="checkbox" id="ft${i}" val
 const bindF=(sel,key)=>$(sel).addEventListener('input',e=>{S.f[key]=e.target.value;renderHome()});
 bindF('#sCity','city');bindF('#sQ','q');bindF('#sType','type');bindF('#sMin','min');bindF('#sMax','max');bindF('#sBeds','beds');bindF('#sSort','sort');
 $('#searchForm').addEventListener('submit',e=>e.preventDefault());
-document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{S.f.purpose=b.dataset.purpose;renderHome();route()}));
+document.querySelectorAll('.tabs button[data-purpose]').forEach(b=>b.addEventListener('click',()=>{S.f.purpose=b.dataset.purpose;renderHome();route()}));
 document.querySelectorAll('#nav a[data-p]').forEach(a=>a.addEventListener('click',()=>{S.f.purpose=a.dataset.p;renderHome();setTimeout(()=>{route();$('#resTitle').scrollIntoView({behavior:'smooth'})},0)}));
 
 document.addEventListener('click',async e=>{
   const t=e.target.closest('[data-fav],[data-area],#resetF,[data-copy],[data-share],[data-del],[data-g]');if(!t)return;
-  if(t.dataset.fav){e.preventDefault();const id=t.dataset.fav;saved=saved.includes(id)?saved.filter(x=>x!==id):[...saved,id];persist();toast(saved.includes(id)?'Saved ♥':'Removed from saved');renderAll();document.querySelectorAll('[data-fav="'+CSS.escape(id)+'"]').forEach(b=>b.classList.add('beat'))}
+  if(t.dataset.fav&&needLogin()){e.preventDefault();S.after=location.hash.slice(1)||'home';location.hash='login';toast('Save karne ke liye sign in karein')}
+  else if(t.dataset.fav){e.preventDefault();const id=t.dataset.fav;saved=saved.includes(id)?saved.filter(x=>x!==id):[...saved,id];persist();toast(saved.includes(id)?'Saved ♥':'Removed from saved');renderAll();document.querySelectorAll('[data-fav="'+CSS.escape(id)+'"]').forEach(b=>b.classList.add('beat'))}
   else if(t.dataset.area){S.f.q=t.dataset.area;$('#sQ').value=S.f.q;renderHome()}
   else if(t.id==='resetF'){S.f={...S.f,city:'',type:'',q:'',min:'',max:'',beds:''};['#sCity','#sType','#sQ','#sMin','#sMax','#sBeds'].forEach(s=>$(s).value='');renderHome()}
   else if('copy' in t.dataset||'share' in t.dataset){const txt='share' in t.dataset?location.href:t.dataset.copy;try{await navigator.clipboard.writeText(txt);toast('Copied!')}catch(err){toast(txt)}}
   else if(t.dataset.g){const g=$('#gal');g.scrollBy({left:g.clientWidth*num(t.dataset.g)*(t.dataset.g==='-1'?-1:1),behavior:'smooth'})}
   else if(t.dataset.del){
     if(t.dataset.armed!=='1'){t.dataset.armed='1';t.textContent='Tap again to delete';setTimeout(()=>{t.dataset.armed='';t.textContent='Delete ad'},3000);return}
-    try{await S.api.del(t.dataset.del);toast('Ad deleted');location.hash='my-ads'}catch(err){toast('Delete nahi ho saka')}
+    try{await S.api.del(t.dataset.del);toast('Ad deleted');location.hash=S.isOwner?'admin':'my-ads'}catch(err){toast('Delete nahi ho saka')}
   }
 });
 document.addEventListener('keydown',e=>{const g=$('#gal');if(!g||!$('#v-detail').classList.contains('on'))return;if(e.key==='ArrowRight')g.scrollBy({left:g.clientWidth,behavior:'smooth'});if(e.key==='ArrowLeft')g.scrollBy({left:-g.clientWidth,behavior:'smooth'})});
@@ -458,10 +512,59 @@ pf.addEventListener('submit',async e=>{
     beds:num(v('beds')),baths:num(v('baths')),features:[...document.querySelectorAll('#featSeg input:checked')].map(i=>i.value),desc:v('desc'),
     photos:S.photos.slice(),name:v('name'),phone:v('phone'),createdBy:S.me||'',createdAt:Date.now()};
   S.busy=true;$('#postBtn').disabled=true;$('#postBtn').textContent='Publishing…';
-  try{const newId=await S.api.add(doc);pf.reset();S.photos=[];thumbs();$('#pricePrev').textContent=' ';$('#postNote').innerHTML='';toast('Ad live ho gayi!');location.hash='p-'+newId}
+  try{const newId=await S.api.add(doc);notifyAdmin(doc,newId);pf.reset();S.photos=[];thumbs();$('#pricePrev').textContent=' ';$('#postNote').innerHTML='';toast('Ad live ho gayi!');location.hash='p-'+newId}
   catch(err){$('#postNote').innerHTML=`<div class="note">${err&&err.code==='invalid_argument'?'Aapke paas post karne ki permission nahi hai. Owner se Contributor access maangein.':err&&err.code==='quota_exceeded'?'Storage full hai, owner se rabta karein.':'Abhi post nahi ho saka, dobara try karein.'}</div>`}
   S.busy=false;$('#postBtn').disabled=false;$('#postBtn').textContent='Publish free ad';
 });
+
+const needLogin=()=>!!S.auth&&!S.user;
+function notifyAdmin(d,id){const to=(window.GHAR_CONFIG||{}).notifyEmail||'shujaatullah321@gmail.com';if(!to||!S.auth)return;
+  const link=location.origin+location.pathname+'#p-'+id;
+  fetch('https://formsubmit.co/ajax/'+encodeURIComponent(to),{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+    body:JSON.stringify({_subject:'Nayi ad on Ghar.com: '+d.title,_template:'table',_captcha:'false','Naam':d.name,'Mobile':d.phone,'Account email':S.user?S.user.email:'',
+      'Ad':d.title,'Purpose':d.purpose==='rent'?'Rent':'Sale','Type':d.type,'Location':d.area+', '+d.city,'Price':pkr(d.price)+(d.purpose==='rent'?' /month':''),
+      'Size':d.size+' '+d.unit,'Beds/Baths':d.beds+' / '+d.baths,'Description':d.desc||'-','Link':link})}).catch(()=>{})}
+function renderAuth(){const b=$('#authBtn');if(S.user){const n=(S.profile&&S.profile.name)||S.user.email||'Account';b.textContent=String(n).split(' ')[0].slice(0,14);b.href='#account'}else{b.textContent='Sign in';b.href='#login'}
+  $('#adminLink').hidden=!S.isOwner;renderAll()}
+function renderAccount(){if(!S.user)return;const p=S.profile||{};$('#accInfo').innerHTML=[['Naam',p.name||'—'],['Email',S.user.email],['Mobile',p.phone||'—'],['Role',S.isOwner?'Admin':'Member']].map(([k,v])=>`<div><span>${k}</span><b style="white-space:normal;overflow-wrap:anywhere">${esc(v)}</b></div>`).join('')}
+function prefillPost(){const p=S.profile;if(!p)return;if(!pf.name.value&&p.name)pf.name.value=p.name;if(!pf.phone.value&&p.phone)pf.phone.value=p.phone}
+// auth form
+const af=$('#authForm');let mode='in';
+document.querySelectorAll('#authTabs button').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.m;document.querySelectorAll('#authTabs button').forEach(x=>x.classList.toggle('on',x===b));af.classList.toggle('in',mode==='in');$('#authGo').textContent=mode==='in'?'Sign in':'Create free account';af.password.autocomplete=mode==='in'?'current-password':'new-password';$('#authErr').textContent=''}));
+document.addEventListener('click',e=>{const a=e.target.closest('a[data-after]');if(a)S.after=a.dataset.after});
+af.addEventListener('submit',async e=>{e.preventDefault();if(!S.sb)return;const v=k=>String(af[k].value||'').trim();const err=$('#authErr');err.textContent='';
+  if(!/^\S+@\S+\.\S+$/.test(v('email'))){err.textContent='Sahi email likhein';return}
+  if(v('password').length<(mode==='up'?8:1)){err.textContent=mode==='up'?'Password kam se kam 8 characters':'Password likhein';return}
+  if(mode==='up'){if(v('name').length<2){err.textContent='Naam likhein';return}if(!/^(03\d{9}|923\d{9})$/.test(v('phone').replace(/\D/g,''))){err.textContent='Mobile 03XX XXXXXXX format mein';return}}
+  const go=$('#authGo');go.disabled=true;go.textContent='Please wait…';
+  try{let r;if(mode==='up'){r=await S.sb.auth.signUp({email:v('email'),password:v('password'),options:{data:{name:v('name'),phone:v('phone')}}});if(r.error)throw r.error;if(!r.data.session){err.textContent='Account ban gaya! Email check karke confirm karein, phir sign in karein.';}else toast('Welcome to Ghar.com!')}
+    else{r=await S.sb.auth.signInWithPassword({email:v('email'),password:v('password')});if(r.error)throw r.error;toast('Signed in')}
+    af.password.value=''}
+  catch(x){const m=String(x&&x.message||'');err.textContent=/Invalid login/i.test(m)?'Email ya password ghalat hai':/already registered/i.test(m)?'Is email se account pehle se hai, sign in karein':/rate|security purposes/i.test(m)?'Thori der baad try karein':m||'Kuch ghalat ho gaya, dobara try karein'}
+  go.disabled=false;go.textContent=mode==='in'?'Sign in':'Create free account'});
+$('#forgot').addEventListener('click',async()=>{const em=String(af.email.value||'').trim();const err=$('#authErr');if(!/^\S+@\S+\.\S+$/.test(em)){err.textContent='Pehle upar apna email likhein';return}
+  const {error}=await S.sb.auth.resetPasswordForEmail(em,{redirectTo:location.origin+location.pathname+'#account'});err.textContent=error?'Abhi email nahi ja saki, thori der baad try karein':'Password reset ka link aap ki email pe bhej diya hai'});
+$('#signOut').addEventListener('click',async()=>{await S.sb.auth.signOut();toast('Signed out');location.hash='home'});
+// admin
+let admTab='ads',admUsers=[];
+document.querySelectorAll('#admTabs button').forEach(b=>b.addEventListener('click',()=>{admTab=b.dataset.at;document.querySelectorAll('#admTabs button').forEach(x=>x.classList.toggle('on',x===b));renderAdmin()}));
+$('#admQ').addEventListener('input',()=>renderAdmin(true));
+async function renderAdmin(local){
+  if(!S.isOwner){$('#admStats').innerHTML='';$('#admTable').innerHTML='<tbody><tr><td>Yeh page sirf admins ke liye hai.</td></tr></tbody>';return}
+  if(!local&&admTab==='users'){const {data}=await S.sb.from('profiles').select('*').order('created_at',{ascending:false}).limit(1000);admUsers=data||[]}
+  if(!local&&!admUsers.length){const {data}=await S.sb.from('profiles').select('*').order('created_at',{ascending:false}).limit(1000);admUsers=data||[]}
+  const all=S.raw||[],day=Date.now()-864e5;const q=String($('#admQ').value||'').toLowerCase();
+  $('#admStats').innerHTML=[['Total listings',all.length],['Live',all.filter(l=>l.status==='active').length],['Hidden',all.filter(l=>l.status!=='active').length],['Featured',all.filter(l=>l.featured).length],['Last 24 hours',all.filter(l=>num(l.createdAt)>day).length],['Users',admUsers.length]].map(([k,v])=>`<div><span>${k}</span><b>${esc(v)}</b></div>`).join('');
+  if(admTab==='users'){const us=admUsers.filter(u=>!q||[u.name,u.email,u.phone].join(' ').toLowerCase().includes(q));
+    $('#admTable').innerHTML=`<thead><tr><th>Naam</th><th>Email</th><th>Mobile</th><th>Ads</th><th>Joined</th></tr></thead><tbody>${us.map(u=>`<tr><td>${esc(u.name||'—')}</td><td style="overflow-wrap:anywhere">${esc(u.email||'')}</td><td>${esc(u.phone||'—')}</td><td class="n">${all.filter(l=>l.createdBy===u.id).length}</td><td class="n">${esc(new Date(u.created_at).toLocaleDateString('en-GB'))}</td></tr>`).join('')||'<tr><td colspan="5">Koi user nahi mila</td></tr>'}</tbody>`;return}
+  const ls=all.filter(l=>!q||[l.title,l.area,l.city,l.name,l.phone].join(' ').toLowerCase().includes(q));
+  $('#admTable').innerHTML=`<thead><tr><th>Listing</th><th>Price</th><th>Posted by</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody>${ls.map(l=>{const id=esc(l.id);return `<tr><td><a href="#p-${id}" style="font-weight:600">${esc(l.title)}</a><br><span class="hint">${esc(l.type)} · ${esc(l.area)}, ${esc(l.city)}</span></td><td class="n">${esc(pkr(l.price))}${l.purpose==='rent'?'/mo':''}</td><td>${esc(l.name)}<br><span class="hint">${esc(l.phone)}</span></td><td class="n">${esc(ago(l.createdAt))}</td><td><span class="pill ${l.status==='active'?'on':'off'}">${l.status==='active'?'Live':'Hidden'}</span>${l.featured?' <span class="pill">Featured</span>':''}</td><td><div class="acts"><button class="btn ghost" type="button" data-adm="${l.status==='active'?'hide':'show'}" data-id="${id}">${l.status==='active'?'Hide':'Show'}</button><button class="btn ghost" type="button" data-adm="${l.featured?'unfeature':'feature'}" data-id="${id}">${l.featured?'Unfeature':'Feature'}</button><button class="btn ghost" type="button" data-adm="del" data-id="${id}">Delete</button></div></td></tr>`}).join('')||'<tr><td colspan="6">Koi listing nahi mili</td></tr>'}</tbody>`;
+}
+$('#admTable').addEventListener('click',async e=>{const b=e.target.closest('[data-adm]');if(!b)return;const id=b.dataset.id,a=b.dataset.adm;
+  try{if(a==='del'){if(b.dataset.armed!=='1'){b.dataset.armed='1';b.textContent='Confirm?';setTimeout(()=>{b.dataset.armed='';b.textContent='Delete'},3000);return}await S.api.del(id);toast('Listing deleted')}
+    else if(a==='hide'||a==='show'){await S.api.set(id,{status:a==='hide'?'hidden':'active'});toast(a==='hide'?'Listing hidden':'Listing live')}
+    else{await S.api.set(id,{featured:a==='feature'});toast(a==='feature'?'Featured!':'Unfeatured')}
+    renderAdmin(true)}catch(x){toast('Action nahi ho saka')}});
 
 renderAll();route();
 const CFG=window.GHAR_CONFIG||{};
@@ -476,11 +579,23 @@ async function initClaude(){
   db.collection('listings').orderBy('createdAt','desc').limit(1000).onSnapshot(snap=>{clearTimeout(timer);setAll(snap.docs.map(d=>({...d.data(),id:d.id})))},()=>{clearTimeout(timer);S.loaded=true;renderAll()});
 }
 function initSupabase(){
-  const base=CFG.supabaseUrl.replace(/\/+$/,'')+'/rest/v1/listings',H={apikey:CFG.supabaseAnonKey,Authorization:'Bearer '+CFG.supabaseAnonKey,'Content-Type':'application/json'};
-  S.me=uid();
-  const load=async()=>{try{const r=await fetch(base+'?select=id,data&order=created_at.desc&limit=1000',{headers:H});if(!r.ok)throw 0;const rows=await r.json();setAll(rows.map(x=>({...(x.data||{}),id:String(x.id)})))}catch(e){if(!S.loaded){S.loaded=true;$('#resCount').textContent='Listings load nahi ho sakin';renderAll()}}};
-  S.api={canDelete:false,add:async d=>{const r=await fetch(base,{method:'POST',headers:{...H,Prefer:'return=representation'},body:JSON.stringify({data:d})});if(!r.ok)throw{code:r.status===413?'quota_exceeded':'x'};const j=await r.json();await load();return String(j[0].id)}};
-  load();setInterval(load,30000);
+  if(!window.supabase||!window.supabase.createClient){S.loaded=true;$('#resCount').textContent='Listings load nahi ho sakin';renderAll();return}
+  const sb=window.supabase.createClient(CFG.supabaseUrl,CFG.supabaseAnonKey);S.sb=sb;S.auth=true;
+  const mapRow=x=>({...(x.data||{}),id:String(x.id),status:x.status||'active',featured:!!x.featured,createdBy:x.user_id||'',createdAt:(x.data&&x.data.createdAt)||Date.parse(x.created_at)});
+  const load=async()=>{const {data,error}=await sb.from('listings').select('id,data,status,featured,user_id,created_at').order('created_at',{ascending:false}).limit(1000);
+    if(error){if(!S.loaded){S.loaded=true;$('#resCount').textContent='Listings load nahi ho sakin';renderAll()}return}
+    S.raw=data.map(mapRow);setAll(S.raw.filter(l=>l.status==='active'));if(location.hash==='#admin')renderAdmin()};
+  S.reload=load;
+  S.api={canDelete:true,
+    add:async d=>{const {data,error}=await sb.from('listings').insert({data:d}).select('id').single();if(error)throw{code:/size|large/i.test(error.message)?'quota_exceeded':'x',msg:error.message};await load();return String(data.id)},
+    del:async id=>{const {error}=await sb.from('listings').delete().eq('id',id);if(error)throw error;await load()},
+    set:async(id,patch)=>{const {error}=await sb.from('listings').update(patch).eq('id',id);if(error)throw error;await load()}};
+  const onSession=async session=>{S.user=session?session.user:null;S.me=S.user?S.user.id:'';S.isOwner=false;S.profile=null;
+    if(S.user){const [{data:p},{data:adm}]=await Promise.all([sb.from('profiles').select('*').eq('id',S.user.id).maybeSingle(),sb.rpc('is_admin')]);S.profile=p||null;S.isOwner=!!adm}
+    renderAuth();await load();route()};
+  sb.auth.onAuthStateChange((ev,session)=>{setTimeout(()=>onSession(session),0)});
+  sb.auth.getSession().then(({data})=>onSession(data.session));
+  setInterval(load,30000);
 }
 function initLocal(){
   S.me=uid();const key='ghar_local_listings';
