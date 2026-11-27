@@ -518,6 +518,8 @@ pf.addEventListener('submit',async e=>{
 });
 
 const needLogin=()=>!!S.auth&&!S.user;
+function mailAdmin(fields){const to=(window.GHAR_CONFIG||{}).notifyEmail||'shujaatullah321@gmail.com';if(!S.auth)return;
+  fetch('https://formsubmit.co/ajax/'+encodeURIComponent(to),{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({_template:'table',_captcha:'false',...fields})}).catch(()=>{})}
 function notifyAdmin(d,id){const to=(window.GHAR_CONFIG||{}).notifyEmail||'shujaatullah321@gmail.com';if(!to||!S.auth)return;
   const link=location.origin+location.pathname+'#p-'+id;
   fetch('https://formsubmit.co/ajax/'+encodeURIComponent(to),{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
@@ -537,7 +539,7 @@ af.addEventListener('submit',async e=>{e.preventDefault();if(!S.sb)return;const 
   if(v('password').length<(mode==='up'?8:1)){err.textContent=mode==='up'?'Password kam se kam 8 characters':'Password likhein';return}
   if(mode==='up'){if(v('name').length<2){err.textContent='Naam likhein';return}if(!/^(03\d{9}|923\d{9})$/.test(v('phone').replace(/\D/g,''))){err.textContent='Mobile 03XX XXXXXXX format mein';return}}
   const go=$('#authGo');go.disabled=true;go.textContent='Please wait…';
-  try{let r;if(mode==='up'){r=await S.sb.auth.signUp({email:v('email'),password:v('password'),options:{data:{name:v('name'),phone:v('phone')}}});if(r.error)throw r.error;if(!r.data.session){err.textContent='Account ban gaya! Email check karke confirm karein, phir sign in karein.';}else toast('Welcome to Ghar.com!')}
+  try{let r;if(mode==='up'){r=await S.sb.auth.signUp({email:v('email'),password:v('password'),options:{data:{name:v('name'),phone:v('phone')}}});if(r.error)throw r.error;mailAdmin({_subject:'Naya user on Ghar.com: '+v('name'),'Naam':v('name'),'Email':v('email'),'Mobile':v('phone'),'Time':new Date().toLocaleString('en-PK',{timeZone:'Asia/Karachi'})});if(!r.data.session){err.textContent='Account ban gaya! Email check karke confirm karein, phir sign in karein.';}else toast('Welcome to Ghar.com!')}
     else{r=await S.sb.auth.signInWithPassword({email:v('email'),password:v('password')});if(r.error)throw r.error;toast('Signed in')}
     af.password.value=''}
   catch(x){const m=String(x&&x.message||'');err.textContent=/Invalid login/i.test(m)?'Email ya password ghalat hai':/already registered/i.test(m)?'Is email se account pehle se hai, sign in karein':/rate|security purposes/i.test(m)?'Thori der baad try karein':m||'Kuch ghalat ho gaya, dobara try karein'}
