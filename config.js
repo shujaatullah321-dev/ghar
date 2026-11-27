@@ -4,7 +4,7 @@
 // Dono khali rahein to site "demo mode" mein chalti hai (ads sirf usi browser mein save hoti hain).
 window.GHAR_CONFIG = {
   supabaseUrl: "https://kyjvhkpkunqaluacnmno.supabase.co",
-  supabaseAnonKey: "PASTE_ANON_KEY_HERE"   // <-- sirf yahan quotes ke andar Ctrl+V karein
+  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5anZoa3BrdW5xYWx1YWNubW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU3NzQ2NDAsImV4cCI6MjExMTM1MDY0MH0.jFlMXaCbSgM8EiIksIv81ikjGqWD3yunvCPLuNgSYYc"   // <-- sirf yahan quotes ke andar Ctrl+V karein
 };
 
 // Demo mode mein dikhne wali sample listings (Supabase jodne ke baad yeh nahi dikhengi)
