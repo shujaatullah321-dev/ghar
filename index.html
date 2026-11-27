@@ -319,6 +319,11 @@ header{transition:box-shadow .2s}header.sc{box-shadow:0 8px 24px rgb(0 0 0 / .18
 <section class="view" id="v-account"><div class="wrap band"><div class="authbox">
   <h2 style="margin:0">Mera account</h2>
   <div class="kv" id="accInfo"></div>
+  <form id="pwForm" class="form" novalidate style="margin:6px 0 18px">
+    <label class="f">Naya password set karein<input name="pw" type="password" autocomplete="new-password" placeholder="Kam se kam 8 characters"></label>
+    <div class="err" id="pwMsg"></div>
+    <button class="btn ghost" type="submit">Save password</button>
+  </form>
   <div class="row"><a class="btn ghost" href="#my-ads">My ads</a><a class="btn ghost" href="#saved">Saved</a><button class="btn pink" type="button" id="signOut">Sign out</button></div>
 </div></div></section>
 
@@ -443,6 +448,7 @@ function route(){
   if(!['home','detail','post','saved','my-ads','login','account','admin'].includes(v))v='home';
   if(needLogin()&&['post','saved','my-ads','account','admin'].includes(v)){S.after=v;location.replace('#login');return}
   if(v==='login'&&S.user){location.replace('#'+(S.after||'home'));return}
+  if(S.user&&S.after==='account'&&v==='home'){S.after='';location.replace('#account');return}
   if(v==='account')renderAccount();if(v==='admin')renderAdmin();if(v==='post')prefillPost();
   document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+v));
   document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.v===v||(v==='home'&&a.dataset.p===S.f.purpose)));
@@ -546,6 +552,8 @@ af.addEventListener('submit',async e=>{e.preventDefault();if(!S.sb)return;const 
   go.disabled=false;go.textContent=mode==='in'?'Sign in':'Create free account'});
 $('#forgot').addEventListener('click',async()=>{const em=String(af.email.value||'').trim();const err=$('#authErr');if(!/^\S+@\S+\.\S+$/.test(em)){err.textContent='Pehle upar apna email likhein';return}
   const {error}=await S.sb.auth.resetPasswordForEmail(em,{redirectTo:location.origin+location.pathname+'#account'});err.textContent=error?'Abhi email nahi ja saki, thori der baad try karein':'Password reset ka link aap ki email pe bhej diya hai'});
+$('#pwForm').addEventListener('submit',async e=>{e.preventDefault();const p=String(e.target.pw.value||'');const m=$('#pwMsg');if(p.length<8){m.textContent='Kam se kam 8 characters';return}
+  const {error}=await S.sb.auth.updateUser({password:p});m.textContent=error?'Password save nahi hua, dobara try karein':'Password save ho gaya';if(!error)e.target.reset()});
 $('#signOut').addEventListener('click',async()=>{await S.sb.auth.signOut();toast('Signed out');location.hash='home'});
 // admin
 let admTab='ads',admUsers=[];
@@ -570,6 +578,7 @@ $('#admTable').addEventListener('click',async e=>{const b=e.target.closest('[dat
 
 renderAll();route();
 const CFG=window.GHAR_CONFIG||{};
+if(/type=(invite|recovery)/.test(location.hash)){S.after='account'}
 const setAll=list=>{S.all=list.filter(l=>l&&okId(l.id));S.loaded=true;renderAll()};
 function uid(){let v='';try{v=localStorage.getItem('ghar_uid')||''}catch(e){}if(!v){v='u'+Math.random().toString(36).slice(2,12);try{localStorage.setItem('ghar_uid',v)}catch(e){}}return v}
 async function initClaude(){
