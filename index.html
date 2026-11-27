@@ -10,15 +10,15 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* VOICE: calm, trustworthy property portal with a modern edge — clear prices, clean cards, one bold accent.
-   IDEA: a city skyline at golden hour with one bright "ghar" in front — the house you're about to find.
-   PICTURE: full-width layered skyline in the hero, search card docked on top of it; every card gets its own drawn home.
-   COLOUR and TYPE: deep plum fields, white ground, one coral accent for actions; Plus Jakarta Sans headings, Inter body.
+/* VOICE: established, trustworthy property portal — clear prices, clean cards, restrained warmth.
+   IDEA: a city skyline at dusk in brick and clay tones — the market you are searching.
+   PICTURE: flat two-tone skyline silhouette with a thin orange horizon; cards use quiet line icons when no photo exists.
+   COLOUR and TYPE: espresso brown fields, white ground, brick red for actions, burnt orange accent; Plus Jakarta Sans headings, Inter body.
    LAYOUT: sticky header, hero band, live results grid, detail and post-ad views on the same page via #hash. */
 :root{color-scheme:light dark;
---bg:light-dark(#ffffff,#120c1c);--ink:light-dark(#1d1230,#f4effa);--muted:light-dark(#6b6180,#a99dbe);
---line:light-dark(#e7e3ee,#2d2342);--card:light-dark(#ffffff,#1b1429);--soft:light-dark(#f6f4f9,#181024);
---pink:#e8395f;--pink2:light-dark(#d02a50,#ff6b8d);--plum:#24143d;--lime:#e8395f}
+--bg:light-dark(#ffffff,#14100d);--ink:light-dark(#22150e,#f5ede6);--muted:light-dark(#76655a,#b8a698);
+--line:light-dark(#ebe2da,#3a2e26);--card:light-dark(#ffffff,#1d1713);--soft:light-dark(#f8f3ef,#1a1411);
+--pink:#b8372a;--pink2:light-dark(#a02e22,#e8705a);--plum:#2a1a12;--lime:#e07b2e;--orange:#e07b2e}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
@@ -31,7 +31,7 @@ a{color:inherit}button,input,select,textarea{font:inherit;color:inherit}
 .band{padding-block:clamp(28px,4vw,56px)}
 header{position:sticky;top:0;z-index:20;background:var(--plum);color:#fff}
 .hd{display:flex;align-items:center;gap:18px;height:64px}
-.logo{font-size:22px;font-weight:800;text-decoration:none;white-space:nowrap}.logo b{color:var(--pink)}
+.logo{font-size:22px;font-weight:800;text-decoration:none;white-space:nowrap}.logo b{color:var(--orange)}
 nav{display:flex;gap:4px;flex:1;overflow-x:auto;scrollbar-width:none}
 nav a{flex:none;text-decoration:none;padding:10px 12px;border-radius:8px;font-weight:600;font-size:15px;opacity:.8}
 nav a:hover,nav a.on{opacity:1;background:rgb(255 255 255 / .1)}
@@ -40,18 +40,18 @@ nav a:hover,nav a.on{opacity:1;background:rgb(255 255 255 / .1)}
 .btn.lime{background:var(--pink);color:#fff}.btn.lime:hover,.btn.pink:hover{filter:brightness(1.07)}.btn.pink{background:var(--pink);color:#fff}
 .btn.ghost{background:transparent;border:1.5px solid var(--line)}.btn.small{min-height:36px;padding:0 12px;font-size:14px}
 .btn:disabled{opacity:.5;cursor:not-allowed}
-.hero{background:linear-gradient(180deg,#24143d 0%,#3a2160 100%);color:#fff;position:relative;overflow:hidden}
+.hero{background:linear-gradient(180deg,#22150e 0%,#3a2318 100%);color:#fff;position:relative;overflow:hidden}
 .hero .wrap{position:relative;z-index:2;padding-top:clamp(28px,4vw,52px)}
-.hero p.sub{font-size:18px;max-width:560px;margin:12px 0 0;opacity:.8}
-.sky{display:block;width:100%;height:clamp(170px,24vw,280px);margin-top:-10px}
-.search{position:relative;z-index:3;margin:-34px auto 0;background:var(--card);color:var(--ink);border-radius:16px;padding:18px;box-shadow:0 12px 40px rgb(36 20 61 / .16);border:1px solid var(--line)}
+.hero p.sub{font-size:18px;max-width:560px;margin:12px 0 0;color:#e6d6c8}
+.sky{display:block;width:100%;height:clamp(140px,18vw,220px);margin-top:8px}
+.search{position:relative;z-index:3;margin:-34px auto 0;background:var(--card);color:var(--ink);border-radius:16px;padding:18px;box-shadow:0 12px 40px rgb(42 26 18 / .16);border:1px solid var(--line)}
 .tabs{display:flex;gap:6px;margin-bottom:12px}
 .tabs button{min-height:40px;padding:0 18px;border-radius:8px;border:0;background:var(--soft);font-weight:700;cursor:pointer}
 .tabs button.on{background:var(--plum);color:#fff}
 .sg{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;align-items:end}
 .sg .wide{grid-column:span 2}
 label.f{display:grid;gap:4px;font-size:13px;font-weight:600;color:var(--muted)}
-input:focus,select:focus,textarea:focus{border-color:var(--plum);outline:none;box-shadow:0 0 0 3px rgb(232 57 95 / .15)}
+input:focus,select:focus,textarea:focus{border-color:var(--plum);outline:none;box-shadow:0 0 0 3px rgb(224 123 46 / .2)}
 input,select,textarea{width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);font-size:16px}
 textarea{min-height:120px;resize:vertical}
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
@@ -61,7 +61,7 @@ textarea{min-height:120px;resize:vertical}
 .bar p{margin:0;color:var(--muted)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;position:relative;transition:box-shadow .2s,transform .2s}
-.card:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgb(36 20 61 / .10)}
+.card:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgb(42 26 18 / .10)}
 .ph{display:block;aspect-ratio:16/10;background:var(--soft);position:relative}
 .ph img,.ph svg{width:100%;height:100%;object-fit:cover;display:block}
 .tag{position:absolute;left:10px;top:10px;background:rgb(255 255 255 / .94);color:var(--plum);font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px}
@@ -86,7 +86,7 @@ textarea{min-height:120px;resize:vertical}
 .gnav{display:flex;gap:8px;justify-content:flex-end;margin-top:8px}
 .side{position:sticky;top:84px;display:grid;gap:14px}
 .box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
-.big{font-size:clamp(26px,3vw,34px);font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;line-height:1.1}
+.big{color:var(--pink2);font-size:clamp(26px,3vw,34px);font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;line-height:1.1}
 .kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:16px 0}
 .kv div{background:var(--soft);border-radius:12px;padding:10px 12px}.kv span{display:block;font-size:13px;color:var(--muted)}.kv b{white-space:nowrap}
 .desc{white-space:pre-wrap;overflow-wrap:anywhere}
@@ -107,14 +107,14 @@ textarea{min-height:120px;resize:vertical}
 .thumbs button{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;border:0;background:#000a;color:#fff;cursor:pointer}
 .drop{display:grid;place-items:center;min-height:110px;border:2px dashed var(--line);border-radius:16px;cursor:pointer;text-align:center;padding:16px;font-weight:700}
 .drop:hover{border-color:var(--pink)}
-.note{padding:12px 16px;border-radius:12px;background:light-dark(#fff3f6,#2a1424);border:1px solid light-dark(#ffd0dc,#4a2238);font-size:14px}
-.free{display:inline-block;background:light-dark(#fde8ee,#3a1828);color:var(--pink2);font-weight:700;padding:2px 10px;border-radius:8px;font-size:13px}
+.note{padding:12px 16px;border-radius:12px;background:light-dark(#fdf3ec,#2a1a12);border:1px solid light-dark(#f3d6c2,#4a2e20);font-size:14px}
+.free{display:inline-block;background:light-dark(#fbe9e2,#3a1d16);color:var(--pink2);font-weight:700;padding:2px 10px;border-radius:8px;font-size:13px}
 footer{background:var(--plum);color:#e9e1f5;margin-top:40px}
 footer .wrap{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;padding-block:28px;font-size:14px}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(120px);background:var(--plum);color:#fff;padding:12px 18px;border-radius:12px;font-weight:700;z-index:50;transition:transform .25s;max-width:90vw}
 .toast.on{transform:translateX(-50%) translateY(0)}
 .hd .btn.ghost{color:#fff;border-color:rgb(255 255 255 / .28)}
-.authbox{max-width:460px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:clamp(20px,4vw,32px);box-shadow:0 12px 40px rgb(36 20 61 / .08)}
+.authbox{max-width:460px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:clamp(20px,4vw,32px);box-shadow:0 12px 40px rgb(42 26 18 / .08)}
 .authbox .form{gap:12px}.authbox .tabs{margin:14px 0 6px}
 #authForm.in .up{display:none}
 .linkbtn{background:none;border:0;color:var(--pink2);font-weight:600;cursor:pointer;min-height:40px;padding:0;justify-self:start}
@@ -127,8 +127,8 @@ table.adm th{text-align:left;font-weight:600;color:var(--muted);background:var(-
 table.adm td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
 table.adm td.n{text-align:right;white-space:nowrap}
 .pill{display:inline-block;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:700;background:var(--soft)}
-.pill.on{background:light-dark(#e3f7ee,#123a2a);color:light-dark(#11734a,#5fe0a8)}.pill.off{background:light-dark(#fde8ee,#3a1828);color:var(--pink2)}
-.tag.f{left:auto;right:56px;top:10px;background:var(--pink);color:#fff}
+.pill.on{background:light-dark(#e3f7ee,#123a2a);color:light-dark(#11734a,#5fe0a8)}.pill.off{background:light-dark(#fbe9e2,#3a1d16);color:var(--pink2)}
+.tag.f{left:auto;right:56px;top:10px;background:var(--orange);color:#fff}
 .acts{display:flex;gap:6px;flex-wrap:wrap}.acts .btn{min-height:34px;padding:0 10px;font-size:13px}
 @media(max-width:900px){.sg{grid-template-columns:repeat(2,minmax(0,1fr))}.sg .wide{grid-column:1/-1}.dt{grid-template-columns:1fr}.side{position:static}}
 @media(max-width:600px){.hd .btn{padding:0 12px;font-size:14px}.search{margin-top:-20px}.fg,.calc{grid-template-columns:1fr}.hide-s{display:none}}
@@ -137,7 +137,7 @@ table.adm td.n{text-align:right;white-space:nowrap}
 /* motion */
 @keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
 @keyframes up{from{transform:translateY(105%)}to{transform:none}}
-@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes grow{from{transform:scaleY(.6);opacity:0}to{transform:scaleY(1);opacity:1}}
 @keyframes pop{0%{opacity:0;transform:translateY(40px) scale(.9)}70%{opacity:1;transform:translateY(-4px) scale(1.01)}100%{transform:none}}
 @keyframes float{50%{transform:translateY(-10px)}}
 @keyframes glow{0%,100%{opacity:.25}50%{opacity:.55}}
@@ -150,22 +150,17 @@ table.adm td.n{text-align:right;white-space:nowrap}
 .hero p.sub,.live{animation:rise .8s .35s cubic-bezier(.2,.8,.2,1) both}
 .search{animation:rise .9s .55s cubic-bezier(.2,.8,.2,1) both}
 .live{display:inline-flex;align-items:center;gap:10px;margin-top:18px;padding:8px 14px;border-radius:999px;background:rgb(255 255 255 / .08);border:1px solid rgb(255 255 255 / .14);font-weight:600;font-size:14px}
-.live i{width:8px;height:8px;border-radius:50%;background:#3ddc97;box-shadow:0 0 0 0 #3ddc9788;animation:ping 1.8s infinite}
-@keyframes ping{70%{box-shadow:0 0 0 10px #3ddc9700}100%{box-shadow:0 0 0 0 #3ddc9700}}
+.live i{width:8px;height:8px;border-radius:50%;background:#e07b2e;box-shadow:0 0 0 0 #e07b2e88;animation:ping 1.8s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 10px #e07b2e00}100%{box-shadow:0 0 0 0 #e07b2e00}}
 .live b{font-variant-numeric:tabular-nums}
-.sky .bld>*{transform-box:fill-box;transform-origin:50% 100%;animation:grow 1.1s cubic-bezier(.2,.8,.2,1) both}
-.sky .far>*{transform-box:fill-box;transform-origin:50% 100%;animation:grow 1.3s cubic-bezier(.2,.8,.2,1) both}
-.sky .house{animation:pop 1s 1s cubic-bezier(.2,.8,.2,1) both;transform-box:fill-box;transform-origin:50% 100%}
-.sky .sun{animation:float 7s ease-in-out infinite;transform-box:fill-box}
-.sky .lit{animation:glow 4s ease-in-out infinite}
-.sky .puff{animation:smoke 3.6s ease-out infinite;transform-box:fill-box;transform-origin:center}
-.sky .puff+.puff{animation-delay:1.2s}.sky .puff+.puff+.puff{animation-delay:2.4s}
+.sky .bld,.sky .far{transform-box:fill-box;transform-origin:50% 100%;animation:grow 1.2s cubic-bezier(.2,.8,.2,1) both}.sky .bld{animation-delay:.15s}
+
 .layer{will-change:transform}
 .card.new{animation:rise .6s var(--d,0s) cubic-bezier(.2,.8,.2,1) both}
 .view.on{animation:fadeView .45s cubic-bezier(.2,.8,.2,1)}
 .fav.beat svg{animation:heart .4s}
 .btn{transition:transform .15s,filter .15s,box-shadow .15s}.btn:hover{transform:translateY(-1px)}.btn:active{transform:translateY(0) scale(.98)}
-.btn.lime,.btn.pink{box-shadow:0 6px 18px rgb(232 57 95 / .28)}
+.btn.lime,.btn.pink{box-shadow:0 6px 18px rgb(184 55 42 / .25)}
 .chip{transition:border-color .15s,color .15s,background .15s}
 .skel{border-radius:14px;height:330px;background:linear-gradient(90deg,var(--soft) 25%,var(--line) 50%,var(--soft) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite linear}
 header{transition:box-shadow .2s}header.sc{box-shadow:0 8px 24px rgb(0 0 0 / .18)}
@@ -196,35 +191,11 @@ header{transition:box-shadow .2s}header.sc{box-shadow:0 8px 24px rgb(0 0 0 / .18
       <div class="live"><i></i><span><b id="liveN">0</b> listings live</span></div>
     </div>
     <svg class="sky" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-      <defs>
-        <pattern id="win" width="22" height="26" patternUnits="userSpaceOnUse"><rect x="6" y="6" width="10" height="12" rx="2" fill="#ffd27a" opacity=".35"/></pattern>
-        <linearGradient id="hz" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2160" stop-opacity="0"/><stop offset="1" stop-color="#5a3a8a" stop-opacity=".6"/></linearGradient>
-      </defs>
-      <rect width="1200" height="300" fill="url(#hz)"/>
-      <circle class="sun" cx="930" cy="130" r="64" fill="#e8395f" opacity=".35"/>
-      <g class="layer" data-k=".18"><g class="far" fill="#4b2f78" opacity=".7">
-        <rect x="20" y="110" width="70" height="190"/><rect x="100" y="70" width="54" height="230"/><rect x="300" y="90" width="80" height="210"/><rect x="560" y="60" width="60" height="240"/><rect x="760" y="100" width="90" height="200"/><rect x="1040" y="80" width="70" height="220"/><rect x="1120" y="130" width="80" height="170"/>
-      </g></g>
-      <g class="layer" data-k=".08"><g class="bld">
-        <rect x="160" y="130" width="96" height="170" fill="#1a0e2e"/><rect x="160" y="130" width="96" height="170" fill="url(#win)"/>
-        <rect x="390" y="100" width="70" height="200" fill="#3a2160"/><rect x="390" y="100" width="70" height="200" fill="url(#win)"/>
-        <rect x="640" y="120" width="110" height="180" fill="#1a0e2e"/><rect x="640" y="120" width="110" height="180" fill="url(#win)"/>
-        <rect x="860" y="150" width="80" height="150" fill="#3a2160"/><rect x="860" y="150" width="80" height="150" fill="url(#win)"/>
-        <rect x="960" y="110" width="70" height="190" fill="#1a0e2e"/><rect x="960" y="110" width="70" height="190" fill="url(#win)"/>
-        <rect x="50" y="180" width="90" height="120" fill="#3a2160"/><rect x="50" y="180" width="90" height="120" fill="url(#win)"/>
-      </g><g class="lit" fill="#ffd27a"><rect x="182" y="162" width="10" height="12" rx="2"/><rect x="666" y="178" width="10" height="12" rx="2"/><rect x="996" y="140" width="10" height="12" rx="2"/><rect x="412" y="230" width="10" height="12" rx="2"/></g></g>
-      <g transform="translate(470 130)"><g class="house">
-        <ellipse cx="80" cy="170" rx="130" ry="14" fill="#2a1745" opacity=".35"/>
-        <rect x="0" y="70" width="160" height="100" fill="#fff"/>
-        <rect x="120" y="70" width="40" height="100" fill="#f1e8f7"/>
-        <path d="M-14 76 80 4 174 76Z" fill="#e8395f"/><path d="M80 4 174 76h-30Z" fill="#c22a4d"/>
-        <rect x="62" y="110" width="36" height="60" rx="4" fill="#24143d"/><circle cx="90" cy="142" r="3" fill="#fff"/>
-        <rect x="16" y="92" width="32" height="28" rx="3" fill="#2a1745"/><rect x="112" y="92" width="32" height="28" rx="3" fill="#2a1745"/>
-        <rect x="16" y="92" width="32" height="6" fill="#ffd9e3" opacity=".6"/><rect x="112" y="92" width="32" height="6" fill="#ffd9e3" opacity=".6"/>
-        <rect x="118" y="20" width="18" height="40" fill="#2a1745"/>
-        <circle class="puff" cx="127" cy="14" r="6" fill="#fff" opacity="0"/><circle class="puff" cx="127" cy="14" r="6" fill="#fff" opacity="0"/><circle class="puff" cx="127" cy="14" r="6" fill="#fff" opacity="0"/>
-      </g></g>
-      <rect y="292" width="1200" height="8" fill="#1a0e2e"/>
+      <defs><radialGradient id="glow" cx="50%" cy="100%" r="65%"><stop offset="0" stop-color="#e07b2e" stop-opacity=".38"/><stop offset=".55" stop-color="#b8372a" stop-opacity=".12"/><stop offset="1" stop-color="#3a2318" stop-opacity="0"/></radialGradient></defs>
+      <rect width="1200" height="300" fill="url(#glow)"/>
+      <g class="layer" data-k=".16"><path class="far" d="M-10 300L-10 240L-10 182L27 182L27 233L70 233L70 209L88 209L88 233L98 233L100 207L102 233L113 233L113 164L136 164L136 181L181 181L181 223L189 223L191 197L193 223L202 223L202 177L243 177L243 199L252 199L254 173L256 199L266 199L266 159L276 159L276 147L299 147L299 159L309 159L309 166L323 166L325 140L327 166L341 166L341 150L361 150L363 124L365 150L386 150L386 171L410 171L410 190L437 190L437 230L452 230L454 204L456 230L472 230L472 175L512 175L512 199L558 199L558 203L570 203L572 177L574 203L587 203L587 183L596 183L598 157L600 183L609 183L609 227L636 227L636 193L644 193L644 181L665 181L665 193L673 193L673 189L717 189L717 173L745 173L745 172L751 172L751 160L779 160L779 172L785 172L785 195L826 195L826 220L844 220L844 198L873 198L873 207L880 207L882 181L884 207L891 207L891 229L914 229L914 165L938 165L938 209L982 209L982 217L994 217L996 191L998 217L1011 217L1011 163L1043 163L1043 197L1085 197L1085 205L1104 205L1104 176L1124 176L1124 196L1161 196L1161 185L1189 185L1189 161L1224 161L1210 300Z" fill="#6b4330" opacity=".45"/></g>
+      <g class="layer" data-k=".06"><path class="bld" d="M-10 300L-10 270L-10 242L28 242L28 234L61 234L61 228L71 228L71 216L87 216L87 228L97 228L97 242L104 242L104 230L125 230L125 242L132 242L132 240L154 240L154 238L181 238L181 222L230 222L230 250L268 250L268 259L321 259L321 245L370 245L370 238L414 238L414 222L471 222L471 227L521 227L521 271L554 271L554 263L574 263L576 237L578 263L599 263L599 255L638 255L638 267L696 267L696 235L754 235L754 221L765 221L765 209L788 209L788 221L799 221L799 254L808 254L808 242L841 242L841 254L850 254L850 233L860 233L862 207L864 233L874 233L874 237L883 237L883 225L915 225L915 237L924 237L924 249L941 249L943 223L945 249L962 249L962 271L1007 271L1007 235L1037 235L1037 210L1072 210L1072 250L1096 250L1096 248L1103 248L1103 236L1147 236L1147 248L1154 248L1154 219L1186 219L1186 213L1218 213L1210 300Z" fill="#1a100b"/></g>
+      <rect y="298" width="1200" height="2" fill="#e07b2e" opacity=".7"/>
     </svg>
   </div>
   <div class="wrap">
@@ -339,7 +310,7 @@ header{transition:box-shadow .2s}header.sc{box-shadow:0 8px 24px rgb(0 0 0 / .18
 </main>
 
 <footer><div class="wrap">
-  <div><span class="logo" style="font-size:18px">ghar<b style="color:var(--lime)">.</b>com</span><br>Listings free for now. Har property, ek jagah.</div>
+  <div><span class="logo" style="font-size:18px">ghar<b style="color:var(--orange)">.</b>com</span><br>Listings free for now. Har property, ek jagah.</div>
   <div>Karachi · Lahore · Islamabad · Rawalpindi · Faisalabad · Multan · Peshawar</div>
 </div></footer>
 <div class="toast" id="toast" role="status"></div>
@@ -370,14 +341,14 @@ const photoSrc=p=>{if(!p)return'';if(p.id&&/^[A-Za-z0-9_\-.]+$/.test(p.id))retur
 const hash=s=>{let h=0;for(const c of String(s))h=(h*31+c.charCodeAt(0))|0;return Math.abs(h)};
 const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),2600)};
 
-function art(type,seed){
-  const pal=['#efeaf6','#e9eef6','#f6ede9','#eaf2f0','#f3ecf4','#ecebf2'];const c=pal[hash(seed)%pal.length];const k=hash(seed+'x')%3;
-  let body;
-  if(type==='Plot'||type==='Farm House')body=`<path d="M40 200 200 150 360 200 200 250Z" fill="#cfe3c0"/><path d="M40 200 200 250v10L40 210Z" fill="#a9c79a"/><path d="M200 250 360 200v10L200 260Z" fill="#93b585"/><path d="M120 175 280 225M280 175 120 225" stroke="#2a1745" stroke-opacity=".25" stroke-width="2"/><path d="M200 70c-22 0-36 16-36 36 0 28 36 62 36 62s36-34 36-62c0-20-14-36-36-36Z" fill="#24143d"/><circle cx="200" cy="106" r="13" fill="#e8395f"/>`;
-  else if(/Flat|Office/.test(type))body=`<ellipse cx="200" cy="246" rx="120" ry="10" fill="#000" opacity=".2"/><rect x="130" y="${50+k*10}" width="110" height="${196-k*10}" fill="#fff"/><rect x="240" y="${70+k*10}" width="40" height="${176-k*10}" fill="#e9def3"/>${Array.from({length:5},(_,r)=>[0,1,2].map(i=>`<rect x="${144+i*32}" y="${70+k*10+r*34}" width="20" height="20" rx="3" fill="#2a1745" opacity=".85"/>`).join('')).join('')}<rect x="180" y="214" width="30" height="32" fill="#e8395f"/>`;
-  else if(/Shop/.test(type))body=`<ellipse cx="200" cy="246" rx="130" ry="10" fill="#000" opacity=".2"/><rect x="90" y="120" width="220" height="126" fill="#fff"/><path d="M80 100h240l-10 40H90Z" fill="#24143d"/>${[0,1,2,3,4,5].map(i=>`<path d="M${90+i*36.6} 140h36.6l-6 0" stroke="${c}" stroke-width="0"/><rect x="${92+i*36}" y="100" width="18" height="40" fill="#e8395f" opacity=".9"/>`).join('')}<rect x="110" y="160" width="120" height="70" rx="4" fill="#2a1745" opacity=".85"/><rect x="250" y="170" width="40" height="76" fill="#e8395f"/>`;
-  else body=`<ellipse cx="200" cy="246" rx="140" ry="12" fill="#24143d" opacity=".12"/><rect x="100" y="130" width="200" height="116" fill="#fff"/><rect x="250" y="130" width="50" height="116" fill="#ece2f5"/><path d="M82 136 200 ${56+k*8} 318 136Z" fill="#e8395f"/><path d="M200 ${56+k*8} 318 136h-36Z" fill="#c22a4d"/><rect x="178" y="178" width="44" height="68" rx="4" fill="#24143d"/><rect x="118" y="156" width="40" height="34" rx="3" fill="#2a1745"/><rect x="244" y="156" width="40" height="34" rx="3" fill="#2a1745"/>`;
-  return `<svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="260" fill="${c}"/><circle cx="${300-k*60}" cy="70" r="40" fill="#fff" opacity=".6"/><rect y="236" width="400" height="24" fill="#24143d" opacity=".06"/>${body}</svg>`;
+function art(type){
+  const st='fill="none" stroke="#9a6a4b" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"';
+  let ic;
+  if(type==='Plot'||type==='Farm House')ic=`<path d="M140 170h120M150 150h100l20 40H130z" ${st}/><path d="M200 70c-15 0-26 11-26 26 0 20 26 44 26 44s26-24 26-44c0-15-11-26-26-26z" ${st}/><circle cx="200" cy="96" r="8" ${st}/>`;
+  else if(/Flat|Office/.test(type))ic=`<path d="M160 190V70h80v120M135 190h130M180 92h12M208 92h12M180 116h12M208 116h12M180 140h12M208 140h12M192 190v-26h16v26" ${st}/>`;
+  else if(/Shop/.test(type))ic=`<path d="M140 110h120l-10-34H150zM146 110v80h108v-80M140 110c0 12 10 18 20 18s20-6 20-18c0 12 10 18 20 18s20-6 20-18c0 12 10 18 20 18s20-6 20-18M186 190v-40h28v40" ${st}/>`;
+  else ic=`<path d="M138 120l62-50 62 50M152 110v80h96v-80M186 190v-38h28v38M130 190h140" ${st}/>`;
+  return `<svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="pg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6eee8"/><stop offset="1" stop-color="#eadbd0"/></linearGradient></defs><rect width="400" height="260" fill="url(#pg)"/>${ic}<text x="200" y="228" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" fill="#9a6a4b">Photo coming soon</text></svg>`;
 }
 const heart=`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-9.5-9.2C1.1 8.4 3.3 5 6.7 5c2 0 3.4 1.1 4.3 2.4h2C13.9 6.1 15.3 5 17.3 5c3.4 0 5.6 3.4 4.2 6.8C19.5 16.4 12 21 12 21Z"/></svg>`;
 
@@ -461,7 +432,7 @@ let shownN=0;
 function countTo(n){if(n===shownN)return;const from=shownN,t0=performance.now(),el=$('#liveN');shownN=n;
   if(matchMedia('(prefers-reduced-motion: reduce)').matches){el.textContent=n;return}
   const step=t=>{const k=Math.min(1,(t-t0)/900),e=1-(1-k)**3;el.textContent=Math.round(from+(n-from)*e);if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step)}
-document.querySelectorAll('.sky .bld>*,.sky .far>*').forEach((r,i)=>r.style.animationDelay=(i%7)*.07+(r.parentElement.classList.contains('far')?0:.25)+'s');
+
 const layers=[...document.querySelectorAll('.sky .layer')];let tick=false;
 window.addEventListener('scroll',()=>{if(tick)return;tick=true;requestAnimationFrame(()=>{const y=window.scrollY;
   if(y<700&&!matchMedia('(prefers-reduced-motion: reduce)').matches)layers.forEach(l=>l.style.transform=`translateY(${y*num(l.dataset.k)}px)`);
