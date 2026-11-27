@@ -41,7 +41,10 @@ nav a:hover,nav a.on{opacity:1;background:rgb(255 255 255 / .1)}
 .btn.ghost{background:transparent;border:1.5px solid var(--line)}.btn.small{min-height:36px;padding:0 12px;font-size:14px}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .hero{background:linear-gradient(180deg,#22150e 0%,#3a2318 100%);color:#fff;position:relative;overflow:hidden}
-.hero .wrap{position:relative;z-index:2;padding-top:clamp(28px,4vw,52px)}
+.hero .wrap{position:relative;z-index:2;padding-top:clamp(40px,6vw,88px);padding-bottom:clamp(120px,15vw,190px)}
+.hero .bgv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:68% 50%;z-index:0}
+.hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgb(20 12 8 / .9) 0%,rgb(20 12 8 / .62) 42%,rgb(20 12 8 / .12) 78%),linear-gradient(0deg,rgb(20 12 8 / .75),rgb(20 12 8 / 0) 38%)}
+@media(max-width:600px){.hero .bgv{object-position:74% 50%}.hero::after{background:linear-gradient(0deg,rgb(20 12 8 / .85),rgb(20 12 8 / .45))}}
 .hero p.sub{font-size:18px;max-width:560px;margin:12px 0 0;color:#e6d6c8}
 .sky{display:block;width:100%;height:clamp(140px,18vw,220px);margin-top:8px}
 .search{position:relative;z-index:3;margin:-34px auto 0;background:var(--card);color:var(--ink);border-radius:16px;padding:18px;box-shadow:0 12px 40px rgb(42 26 18 / .16);border:1px solid var(--line)}
@@ -190,13 +193,7 @@ header{transition:box-shadow .2s}header.sc{box-shadow:0 8px 24px rgb(0 0 0 / .18
       <p class="sub">Buy, rent ya becho. Pakistan bhar ki listings, aur abhi har ad <b>bilkul free</b> hai.</p>
       <div class="live"><i></i><span><b id="liveN">0</b> listings live</span></div>
     </div>
-    <svg class="sky" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-      <defs><radialGradient id="glow" cx="50%" cy="100%" r="65%"><stop offset="0" stop-color="#e07b2e" stop-opacity=".38"/><stop offset=".55" stop-color="#b8372a" stop-opacity=".12"/><stop offset="1" stop-color="#3a2318" stop-opacity="0"/></radialGradient></defs>
-      <rect width="1200" height="300" fill="url(#glow)"/>
-      <g class="layer" data-k=".16"><path class="far" d="M-10 300L-10 240L-10 182L27 182L27 233L70 233L70 209L88 209L88 233L98 233L100 207L102 233L113 233L113 164L136 164L136 181L181 181L181 223L189 223L191 197L193 223L202 223L202 177L243 177L243 199L252 199L254 173L256 199L266 199L266 159L276 159L276 147L299 147L299 159L309 159L309 166L323 166L325 140L327 166L341 166L341 150L361 150L363 124L365 150L386 150L386 171L410 171L410 190L437 190L437 230L452 230L454 204L456 230L472 230L472 175L512 175L512 199L558 199L558 203L570 203L572 177L574 203L587 203L587 183L596 183L598 157L600 183L609 183L609 227L636 227L636 193L644 193L644 181L665 181L665 193L673 193L673 189L717 189L717 173L745 173L745 172L751 172L751 160L779 160L779 172L785 172L785 195L826 195L826 220L844 220L844 198L873 198L873 207L880 207L882 181L884 207L891 207L891 229L914 229L914 165L938 165L938 209L982 209L982 217L994 217L996 191L998 217L1011 217L1011 163L1043 163L1043 197L1085 197L1085 205L1104 205L1104 176L1124 176L1124 196L1161 196L1161 185L1189 185L1189 161L1224 161L1210 300Z" fill="#6b4330" opacity=".45"/></g>
-      <g class="layer" data-k=".06"><path class="bld" d="M-10 300L-10 270L-10 242L28 242L28 234L61 234L61 228L71 228L71 216L87 216L87 228L97 228L97 242L104 242L104 230L125 230L125 242L132 242L132 240L154 240L154 238L181 238L181 222L230 222L230 250L268 250L268 259L321 259L321 245L370 245L370 238L414 238L414 222L471 222L471 227L521 227L521 271L554 271L554 263L574 263L576 237L578 263L599 263L599 255L638 255L638 267L696 267L696 235L754 235L754 221L765 221L765 209L788 209L788 221L799 221L799 254L808 254L808 242L841 242L841 254L850 254L850 233L860 233L862 207L864 233L874 233L874 237L883 237L883 225L915 225L915 237L924 237L924 249L941 249L943 223L945 249L962 249L962 271L1007 271L1007 235L1037 235L1037 210L1072 210L1072 250L1096 250L1096 248L1103 248L1103 236L1147 236L1147 248L1154 248L1154 219L1186 219L1186 213L1218 213L1210 300Z" fill="#1a100b"/></g>
-      <rect y="298" width="1200" height="2" fill="#e07b2e" opacity=".7"/>
-    </svg>
+    <video class="bgv" autoplay muted loop playsinline preload="auto" poster="hero-poster.jpg" aria-hidden="true"><source src="hero.mp4" type="video/mp4"></video>
   </div>
   <div class="wrap">
     <form class="search" id="searchForm">
@@ -433,6 +430,7 @@ function countTo(n){if(n===shownN)return;const from=shownN,t0=performance.now(),
   if(matchMedia('(prefers-reduced-motion: reduce)').matches){el.textContent=n;return}
   const step=t=>{const k=Math.min(1,(t-t0)/900),e=1-(1-k)**3;el.textContent=Math.round(from+(n-from)*e);if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step)}
 
+{const v=document.querySelector('.hero .bgv');if(v&&matchMedia('(prefers-reduced-motion: reduce)').matches){v.removeAttribute('autoplay');v.pause()}}
 const layers=[...document.querySelectorAll('.sky .layer')];let tick=false;
 window.addEventListener('scroll',()=>{if(tick)return;tick=true;requestAnimationFrame(()=>{const y=window.scrollY;
   if(y<700&&!matchMedia('(prefers-reduced-motion: reduce)').matches)layers.forEach(l=>l.style.transform=`translateY(${y*num(l.dataset.k)}px)`);
